@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">FractionCalculator</string>
+    <string name="numerator">Numerator</string>
+    <string name="denominator">Denominator</string>
+    <string name="makes">Makes</string>
+    <string name="numerator_s">N</string>
+    <string name="denominator_s">D</string>
+    <string name="copy_n">Copy N</string>
+    <string name="copy_d">Copy D</string>
+    <string name="reduction">Reduction</string>
+    <string name="about">About</string>
+    <string name="dialog_about_title">FractionCalculator v1.0</string>
+    <string name="dialog_about_message">A tool for calculating the addition, subtraction, multiplication, and division of fractions. Author: MrShiehX</string>
+    <string name="dialog_about_visit_github_of_this_application">Visit the Github repository of this application</string>
+    <string name="dialog_about_visit_github_of_author">Visit MrShiehX\'s Github repository</string>
+    <string name="dialog_about_visit_msxw">Visit MSXW</string>
+</resources>
