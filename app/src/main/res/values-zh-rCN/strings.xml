@@ -10,7 +10,7 @@
     <string name="copy_d">复制分母</string>
     <string name="reduction">约分</string>
     <string name="about">关于</string>
-    <string name="dialog_about_title">分数计算器 v1.0</string>
+    <string name="dialog_about_title">分数计算器 v1.0.1</string>
     <string name="dialog_about_message">计算分数的加、减、乘、除的工具。作者：MrShiehX</string>
     <string name="dialog_about_visit_github_of_this_application">访问本应用的 Github 仓库</string>
     <string name="dialog_about_visit_github_of_author">访问 MrShiehX 的 Github 仓库</string>
