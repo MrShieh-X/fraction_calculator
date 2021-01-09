@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
         makes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, String.valueOf(add.isChecked()) + minus.isChecked() + times.isChecked() + div.isChecked() + "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, String.valueOf(add.isChecked()) + minus.isChecked() + times.isChecked() + div.isChecked() + "", Toast.LENGTH_SHORT).show();
                 if (!TextUtils.isEmpty(n1.getText())
                         && !TextUtils.isEmpty(n2.getText())
                         && !TextUtils.isEmpty(d1.getText())
@@ -168,8 +168,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, 			// 菜单不分组
-                Menu.FIRST + 1, 1, getString(R.string.about));
+        menu.add(Menu.NONE, Menu.FIRST + 1, 1, getString(R.string.about));
         return true;
     }
 
