@@ -4,15 +4,16 @@
     <string name="numerator">分子</string>
     <string name="denominator">分母</string>
     <string name="makes">等于</string>
-    <string name="numerator_s">子</string>
-    <string name="denominator_s">母</string>
     <string name="copy_n">复制分子</string>
     <string name="copy_d">复制分母</string>
     <string name="reduction">约分</string>
     <string name="about">关于</string>
-    <string name="dialog_about_title">分数计算器 v1.0.1</string>
-    <string name="dialog_about_message">计算分数的加、减、乘、除的工具。作者：MrShiehX</string>
+    <string name="dialog_about_title">分数计算器 v1.1</string>
+    <string name="dialog_about_message">计算分数的加、减、乘、除以及乘方的工具。作者：MrShiehX</string>
     <string name="dialog_about_visit_github_of_this_application">访问本应用的 Github 仓库</string>
     <string name="dialog_about_visit_github_of_author">访问 MrShiehX 的 Github 仓库</string>
     <string name="dialog_about_visit_msxw">访问 MSXW</string>
+    <string name="negative">负数</string>
+    <string name="denominator_zero">分母不能为零</string>
+    <string name="exponential">指数</string>
 </resources>

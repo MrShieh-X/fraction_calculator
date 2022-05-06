@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,11 +22,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-    EditText n1, d1, n2, d2, n3, d3;
-    Button makes, copyN, copyD;
+    EditText n1, d1, n2, d2, n3, d3, n4, d4, n5, d5, exponential;
+    Button makes, copyN, copyD, makes2;
     RadioGroup symbols;
     RadioButton add, minus, times, div;
-    CheckBox red;
+    CheckBox red, negative1, negative2, negative3, red2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +35,15 @@ public class MainActivity extends Activity {
         n1 = findViewById(R.id.numerator1);
         n2 = findViewById(R.id.numerator2);
         n3 = findViewById(R.id.numerator3);
+        n4 = findViewById(R.id.numerator4);
+        n5 = findViewById(R.id.numerator5);
         d1 = findViewById(R.id.denominator1);
         d2 = findViewById(R.id.denominator2);
         d3 = findViewById(R.id.denominator3);
+        d4 = findViewById(R.id.denominator4);
+        d5 = findViewById(R.id.denominator5);
         makes = findViewById(R.id.makes);
+        makes2 = findViewById(R.id.makes2);
         copyN = findViewById(R.id.copy_n);
         copyD = findViewById(R.id.copy_d);
         symbols = findViewById(R.id.symbols);
@@ -49,115 +52,106 @@ public class MainActivity extends Activity {
         times = findViewById(R.id.times);
         div = findViewById(R.id.div);
         red = findViewById(R.id.reduction);
-        copyN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!TextUtils.isEmpty(n3.getText())) {
-                    copy(n3.getText());
-                }
+        red2 = findViewById(R.id.reduction2);
+
+        negative1 = findViewById(R.id.negative1);
+        negative2 = findViewById(R.id.negative2);
+        negative3 = findViewById(R.id.negative3);
+
+        exponential = findViewById(R.id.exponential);
+
+        copyN.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(n3.getText())) {
+                copy(n3.getText());
             }
         });
-        copyD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!TextUtils.isEmpty(d3.getText())) {
-                    copy(d3.getText());
-                }
+        copyD.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(d3.getText())) {
+                copy(d3.getText());
             }
         });
-        makes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(MainActivity.this, String.valueOf(add.isChecked()) + minus.isChecked() + times.isChecked() + div.isChecked() + "", Toast.LENGTH_SHORT).show();
-                if (!TextUtils.isEmpty(n1.getText())
-                        && !TextUtils.isEmpty(n2.getText())
-                        && !TextUtils.isEmpty(d1.getText())
-                        && !TextUtils.isEmpty(d2.getText())) {
-                    //Toast.makeText(MainActivity.this, "67", Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(MainActivity.this, "747", Toast.LENGTH_SHORT).show();
+        makes.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(n1.getText())
+                    && !TextUtils.isEmpty(n2.getText())
+                    && !TextUtils.isEmpty(d1.getText())
+                    && !TextUtils.isEmpty(d2.getText())) {
 
-                    /**
-                     * n1  n2 = n3
-                     * d1  d2 = d3
-                     *
-                     * 2   5
-                     * 3   7
-                     * 14
-                     * 21
-                     * n1*d2=nn1
-                     * d1*n2=nn2
-                     * d1*d2=nd1
-                     * d1*d2=nd2
-                     */
+                boolean negative1 = MainActivity.this.negative1.isChecked();
+                boolean negative2 = MainActivity.this.negative2.isChecked();
+                Fraction f1 = new Fraction(negative1, Integer.parseInt(n1.getText().toString()), Integer.parseInt(d1.getText().toString()));
+                Fraction f2 = new Fraction(negative2, Integer.parseInt(n2.getText().toString()), Integer.parseInt(d2.getText().toString()));
 
-                    int nn1 = Integer.parseInt(n1.getText().toString()) * Integer.parseInt(d2.getText().toString());
-                    int nn2 = Integer.parseInt(d1.getText().toString()) * Integer.parseInt(n2.getText().toString());
-                    int nd1a2 = Integer.parseInt(d1.getText().toString()) * Integer.parseInt(d2.getText().toString());
+
+                if (f1.getDenominator() == 0 || f2.getDenominator() == 0) {
+                    Toast.makeText(MainActivity.this, R.string.denominator_zero, Toast.LENGTH_SHORT).show();
+                    n3.setText(null);
+                    d3.setText(null);
+                } else {
+                    Fraction result;
+                    boolean red = MainActivity.this.red.isChecked();
                     if (add.isChecked()) {
-                        Fraction fraction = new Fraction(nn1 + nn2, nd1a2);
-                        if (red.isChecked()) {
-                            Fraction fraction1 = getSF(fraction);
-                            n3.setText(fraction1.getNumerator() + "");
-                            d3.setText(fraction1.getDenominator() + "");
-                        } else {
-                            n3.setText(fraction.getNumerator() + "");
-                            d3.setText(fraction.getDenominator() + "");
-                        }
+                        result = f1.add(f2, red);
+                        n3.setText((result.negative ? "-" : "") + result.getNumerator());
+                        d3.setText(result.getDenominator() + "");
                     } else if (minus.isChecked()) {
-                        Fraction fraction = new Fraction(nn1 - nn2, nd1a2);
-                        if (red.isChecked()) {
-                            Fraction fraction1 = getSF(fraction);
-                            n3.setText(fraction1.getNumerator() + "");
-                            d3.setText(fraction1.getDenominator() + "");
-                        } else {
-                            n3.setText(fraction.getNumerator() + "");
-                            d3.setText(fraction.getDenominator() + "");
-                        }
+                        result = f1.minus(f2, red);
+                        n3.setText((result.negative ? "-" : "") + result.getNumerator());
+                        d3.setText(result.getDenominator() + "");
                     } else if (times.isChecked()) {
-                        int nn = Integer.parseInt(n1.getText().toString()) * Integer.parseInt(n2.getText().toString());
-                        int nd = Integer.parseInt(d1.getText().toString()) * Integer.parseInt(d2.getText().toString());
-                        Fraction fraction = new Fraction(nn, nd);
-                        if (red.isChecked()) {
-                            Fraction fraction1 = getSF(fraction);
-                            n3.setText(fraction1.getNumerator() + "");
-                            d3.setText(fraction1.getDenominator() + "");
-                        } else {
-                            n3.setText(fraction.getNumerator() + "");
-                            d3.setText(fraction.getDenominator() + "");
-                        }
-
+                        result = f1.times(f2, red);
+                        n3.setText((result.negative ? "-" : "") + result.getNumerator());
+                        d3.setText(result.getDenominator() + "");
                     } else if (div.isChecked()) {
-                        int a = Integer.parseInt(d2.getText().toString());
-                        int b = Integer.parseInt(n2.getText().toString());
-                        int nn = Integer.parseInt(n1.getText().toString()) * a;
-                        int nd = Integer.parseInt(d1.getText().toString()) * b;
-                        Fraction fraction = new Fraction(nn, nd);
-                        if (red.isChecked()) {
-                            Fraction fraction1 = getSF(fraction);
-                            n3.setText(fraction1.getNumerator() + "");
-                            d3.setText(fraction1.getDenominator() + "");
-                        } else {
-                            n3.setText(fraction.getNumerator() + "");
-                            d3.setText(fraction.getDenominator() + "");
-                        }
+                        result = f1.div(f2, red);
+                        n3.setText((result.negative ? "-" : "") + result.getNumerator());
+                        d3.setText(result.getDenominator() + "");
+
                     }
                 }
             }
         });
-    }
+        makes2.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(n4.getText())
+                    && !TextUtils.isEmpty(d4.getText())
+                    && !TextUtils.isEmpty(exponential.getText())) {
 
-    Fraction getSF(Fraction fraction) {
-        int cf = getCF(fraction);
-        return new Fraction(fraction.getNumerator() / cf, fraction.getDenominator() / cf);
-    }
+                boolean negative = MainActivity.this.negative3.isChecked();
+                Fraction f1 = new Fraction(negative, Integer.parseInt(n4.getText().toString()), Integer.parseInt(d4.getText().toString()));
 
-    int getCF(Fraction fraction) {
-        for (int x = fraction.getNumerator(); x > 1; x--) {
-            if (fraction.getNumerator() % x == 0 && fraction.getDenominator() % x == 0) {
-                return x;
+
+                int exponential = Integer.parseInt(MainActivity.this.exponential.getText().toString());
+                if (f1.getDenominator() == 0) {
+                    Toast.makeText(MainActivity.this, R.string.denominator_zero, Toast.LENGTH_SHORT).show();
+                    n5.setText(null);
+                    d5.setText(null);
+                } else {
+                    if (exponential == 0) {
+                        n5.setText("1");
+                        d5.setText("1");
+                    } else if (exponential == 1) {
+                        n5.setText((negative ? "-" : "") + n4.getText().toString());
+                        d5.setText(d4.getText());
+                    } else if (exponential > 0) {
+                        Fraction source = f1;
+                        for (int i = 0; i < exponential - 1; i++) {
+                            f1 = f1.times(source, MainActivity.this.red2.isChecked());
+                        }
+                        n5.setText((f1.negative ? "-" : "") + f1.numerator);
+                        d5.setText(String.valueOf(f1.denominator));
+                    } else {
+
+                        Fraction source = f1;
+                        for (int i = 0; i < ((-exponential) - 1); i++) {
+                            f1 = f1.times(source, MainActivity.this.red2.isChecked());
+                        }
+                        f1 = f1.reciprocal();
+                        n5.setText((f1.negative ? "-" : "") + f1.numerator);
+                        d5.setText(String.valueOf(f1.denominator));
+                    }
+
+                }
             }
-        }
-        return 1;
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -178,24 +172,9 @@ public class MainActivity extends Activity {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.dialog_about_title)
                     .setMessage(R.string.dialog_about_message)
-                    .setPositiveButton(R.string.dialog_about_visit_github_of_this_application, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            goToWebsite("https://github.com/MrShieh-X/fraction_calculator");
-                        }
-                    })
-                    .setNegativeButton(R.string.dialog_about_visit_github_of_author, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            goToWebsite("https://github.com/MrShieh-X");
-                        }
-                    })
-                    .setNeutralButton(R.string.dialog_about_visit_msxw, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            goToWebsite("https://mrshieh-x.github.io");
-                        }
-                    }).show();
+                    .setPositiveButton(R.string.dialog_about_visit_github_of_this_application, (dialog, which) -> goToWebsite("https://github.com/MrShieh-X/fraction_calculator"))
+                    .setNegativeButton(R.string.dialog_about_visit_github_of_author, (dialog, which) -> goToWebsite("https://github.com/MrShieh-X"))
+                    .setNeutralButton(R.string.dialog_about_visit_msxw, (dialog, which) -> goToWebsite("https://mrshieh-x.github.io")).show();
         }
         return true;
     }
